@@ -47,6 +47,8 @@ class Jogo:
                         self.movement[1] = True
                     if event.key == pygame.K_RIGHT:
                         self.movement[0] = True
+                    if event.key == pygame.K_UP:
+                        self.player.velocidade[1] = -3
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
                         self.movement[1] = False
@@ -55,6 +57,6 @@ class Jogo:
 
             self.tela.blit(pygame.transform.scale(self.display, self.tela.get_size()), (0,0))
             pygame.display.update()
-            self.clock.tick(60)
+            self.clock.tick(120)
 
 Jogo().run()
