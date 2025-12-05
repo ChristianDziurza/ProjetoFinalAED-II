@@ -2,8 +2,8 @@ import sys
 
 import pygame
 
-from Scripts.utils import load_image, load_images
-from Scripts.entidades import PhysicsEntity
+from Scripts.utils import load_image, load_images, Animation
+from Scripts.entidades import PhysicsEntity, Player
 from Scripts.tilemap import TileMap
 
 class Jogo:
@@ -18,14 +18,17 @@ class Jogo:
 
         self.movement = [False, False]
         self.assets = {
-            'decor': load_images('tiles/decor'),
             'grama': load_images('tiles/gramas'),
-            'decor_grande': load_images('tiles/decor_grande'),
             'pedra': load_images('tiles/pedra'),
-            'player' : load_image('Carinha.png')
+            'player' : load_image('Carinha.png'),
+            'player/idle' : Animation(load_images('anim/idle'), imgDur=100),
+            'player/run' : Animation(load_images('anim/run'), imgDur=4),
+            'player/jump' : Animation(load_images('anim/run'), imgDur=2)
+
+
         }
 
-        self.player = PhysicsEntity(self, 'player', (50,50), (8, 15))
+        self.player = Player(self, (50,150), (10, 18))
 
         self.tilemap = TileMap(self, tile_size=16)
 
@@ -44,19 +47,19 @@ class Jogo:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        self.movement[1] = True
-                    if event.key == pygame.K_RIGHT:
                         self.movement[0] = True
+                    if event.key == pygame.K_RIGHT:
+                        self.movement[1] = True
                     if event.key == pygame.K_UP:
                         self.player.velocidade[1] = -3
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
-                        self.movement[1] = False
-                    if event.key == pygame.K_RIGHT:
                         self.movement[0] = False
+                    if event.key == pygame.K_RIGHT:
+                        self.movement[1] = False
 
             self.tela.blit(pygame.transform.scale(self.display, self.tela.get_size()), (0,0))
             pygame.display.update()
-            self.clock.tick(120)
+            self.clock.tick(60)
 
 Jogo().run()
